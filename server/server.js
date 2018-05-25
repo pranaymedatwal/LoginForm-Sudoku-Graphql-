@@ -19,7 +19,7 @@ var UserSchema = new Schema({
     
 },{collection:'user'});
 var sudokuSchema=new Schema({
-	userid:String,
+	email:String,
 	gamewon:{type:Number,default:0},
 	timer:{type:String,default:"0"}
 },{collection:'UserSudokuDetails'});
@@ -41,8 +41,9 @@ const typeDefs=`
 	type Mutation{
 		signup(firstname: String, lastname: String,email:String,password:String): Boolean
 		login(email:String,password:String):user
-		firstpage(userid:String):sudokudetails
-		sendsudokudetails(gamewon:Int,timewon:String):Boolean
+		firstpage(email:String):sudokudetails
+		sendsudokudetails(gamewon:Int,timewon:String,email:String):Boolean
+		gettinghistory(email:String):[sudokudetails]
 	},
 	type user{
 		_id:String,
@@ -52,7 +53,7 @@ const typeDefs=`
 		password:String
 	},
 	type sudokudetails{
-		userid:String,
+		email:String,
     gamewon:Int,
     timer:String
 	}
@@ -68,13 +69,18 @@ const resolvers = {
 		signup: (root, data) =>{
 			console.log(data);
 			var userdata = new user({
-	firstname:data.firstname,
-	lastname:data.lastname,
-	email:data.email,
-	password:data.password,
-	
-});
-  userdata.save();
+	    firstname:data.firstname,
+	    lastname:data.lastname,
+	    email:data.email,
+	    password:data.password,
+	    });
+      userdata.save();
+      var EachUserSudokuDetails = new UserSudokuDetails({
+	    email:data.email,
+	    gamewon:0,
+	    timer:"0"
+	    });
+		  EachUserSudokuDetails.save();
 			return true;
 		},
 		login:async (root,data)=>{
@@ -85,30 +91,31 @@ const resolvers = {
 			if(response!=null)
 			{
 				return response;
-				
 			}
 
 		},
-		firstpage:async(root,data)=>{
+		firstpage:async (root,data)=>{
 			console.log(data);
-			var EachUserSudokuDetails = new UserSudokuDetails({
-	    userid:data.userid,
-	    gamewon:0,
-	    timer:"0"
-	    });
-		  EachUserSudokuDetails.save();
-		  const response=await UserSudokuDetails.findOne({userid:data.userid});
-		  return response;
+		  const response=await UserSudokuDetails.find({"email":data.email}).sort({"gamewon":-1}).limit(1);
+		  console.log(  response);
+
+		  return response[0];
+
 		},
-		sendsudokudetails:async(root,data)=>{
+		sendsudokudetails:async (root,data)=>{
 			console.log(data);
 			var EachUserSudokuDetails = new UserSudokuDetails({
-	    userid:data.userid,
+	    email:data.email,
 	    gamewon:data.gamewon,
 	    timer:data.timewon
 	    });
 		  EachUserSudokuDetails.save();
 		  return true;
+		},
+		gettinghistory:async (root,data)=>{
+     const response=await UserSudokuDetails.find({"email":data.email});
+     console.log(response)
+     return response;
 		}
 	}
 };

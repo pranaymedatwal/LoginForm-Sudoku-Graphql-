@@ -29,12 +29,12 @@ async senddetails(event){
     debugger
 
     console.log(response)
-    localStorage.setItem("id", response.data.login._id);
     this.authenticateuser(response.data.login);
   }
  authenticateuser(response)
   {debugger
      if(response!=null){
+      localStorage.setItem("id", response.email);
       this.setState({
         response:response
       })
@@ -88,7 +88,6 @@ async senddetails(event){
 const login =gql`
 mutation($email:String,$password:String){
   login(email:$email,password:$password){
-    _id
     firstname
     lastname
     email

@@ -12,13 +12,16 @@ class Firstpage extends Component {
     username:"",
     gamewon:0,
     timer:"10:0",
-    timewon:""
+    timewon:"",
+    gamedetails:[]
     };
     this.EnterNumber=this.EnterNumber.bind(this);
     this.startTimer=this.startTimer.bind(this);
   }
 componentWillMount()
-{ this.SendingUserDetails();
+{debugger
+ this.SendingUserDetails();
+  this.GettingHistory();
   var x=((Math.floor(Math.random() * 2) + 1));
   if(x==1){ 
     window.StoringValue=[["","",3,"",7,"","","",5],[8,4,"",5,"","","","",3],[5,"","",8,"","","",2,6]
@@ -28,10 +31,10 @@ componentWillMount()
     }
   else
     {
-    window.StoringValue=[["","",5,"",4,"","","",3],[8,4,"",5,"","","","",3],[5,"","",8,"","","",2,6]
-    ,["","",4,1,"",5,"","",9],["",8,"","",6,"","",5,""],
-    [1,"","","","",2,6,"",""],[9,2,"","","",8,"",6,""],
-    [4,"","","","",9,"",3,7],["","","","",4,"",5,9,""]];
+    window.StoringValue=[["","","",3,"",2,"","",8],["","","","","","",4,5,3],["","","","",4,1,"","",""]
+    ,["","",7,8,"","",2,"",5],["",8,"",6,"",3,"",9,""],
+    [2,"","","","",5,8,"",""],[9,2,"",4,"","","",8,""],
+    [7,3,6,"","","","","",""],[4,"","",5,"",9,"","",""]];
   }
   this.setState({
   username:this.props.userdisplay
@@ -56,7 +59,7 @@ componentDidMount()
 }
 
 
- startTimer() {
+startTimer(){
   var presentTime = this.state.timer
   var timeArray = presentTime.split(/[:]+/);
   var m = timeArray[0];
@@ -69,7 +72,7 @@ componentDidMount()
     this.setState({
       timer:time
     })
-  setTimeout(this.startTimer, 40000);
+  setTimeout(this.startTimer, 1000);
 }
 
 checkSecond(sec) {
@@ -77,16 +80,35 @@ checkSecond(sec) {
   if (sec < 0) {sec = "59"};
   return sec;
 }
+async GettingHistory()
+{debugger
+ var email=localStorage.getItem("id");
+  const history={
+    email:email
+   }
+  const response=await this.props.gettinghistory({
+    variables:history
+  });
+  console.log(response)
+  var response1=response.data.gettinghistory;
+  console.log(response1);
+  response1.shift();
+  await this.setState({
+    gamedetails:response1
+  });
+}
 async SendingUserDetails(){
-var userid=localStorage.getItem("id");
+  debugger
+  var email=localStorage.getItem("id");
   const user={
-    userid:userid
+    email:email
   }
    const response =await this.props.firstpage({
       variables: user
     });
+   debugger
    console.log(response);
-   this.setState({
+   await this.setState({
     gamewon:response.data.firstpage.gamewon
    })
 }
@@ -137,10 +159,11 @@ var userid=localStorage.getItem("id");
     window.location.reload();
   }
   }
-  }
+}
   async sendingSudokuDetails()
   {
     var sudokudetails={
+      email:localStorage.getItem("id"),
       gamewon:this.state.gamewon,
       timewon:this.state.timewon
     }
@@ -242,7 +265,7 @@ debugger
       <div id="body1" className="container">
         <div className="row">
           <div className="col-sm-4">
-            <h1 id="timer"></h1>
+            <h1 id="timer">{this.state.timer}</h1>
           </div>
           <div className=" col-sm-2">
             <h1><b className="label label-default">SUDOKU</b></h1>
@@ -267,6 +290,28 @@ debugger
               </tbody>
             </table>
           </div>
+          <div >
+          <table className="table table-bordered">
+            <thead>
+              <tr>
+              <th>GameWon</th>
+              <th>Timer</th>
+              </tr>
+            </thead>
+            <tbody>
+              {this.state.gamedetails.map((item, index) => {
+              return (
+                <tr key={index}>
+                  <td>{item.gamewon}</td>
+                  <td>{item.timer}</td>
+                </tr>
+                );
+              })
+            }
+
+          </tbody>
+          </table>
+          </div>
         </div>
       </div>
      <button onClick={this.cleardata}> <Link to={'/'} >
@@ -276,21 +321,30 @@ debugger
   }
 }
 const firstpage =gql`
-mutation($userid:String){
-  firstpage(userid:$userid){
+mutation($email:String){
+  firstpage(email:$email){
    gamewon
    timer
-   userid
+   email
 
   }
 }
 `
 const sendsudokudetails =gql`
-mutation($gamewon:Int,$timewon:String){
-  sendsudokudetails(gamewon:$gamewon,timewon:$timewon)
+mutation($gamewon:Int,$timewon:String$email:String){
+  sendsudokudetails(gamewon:$gamewon,timewon:$timewon,email:$email)
 }
 `
-export default compose(
+const gettinghistory =gql`
+mutation($email:String){
+   gettinghistory(email:$email)
+   {
+   gamewon
+   timer
+ }
+}
+`
+export default compose(graphql(gettinghistory,{name:'gettinghistory'}),
   graphql(sendsudokudetails,{name:'sudokugamedetails'}),
   graphql(firstpage, {name: 'firstpage'})
 

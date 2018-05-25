@@ -27,7 +27,7 @@ class Signup extends Component {
       variables: userDetails
     });
     console.log(response);
-    this.completedsignup(response.data.signup );
+    this.completedsignup(response.data.signup);
   }
 
   completedsignup(response){
