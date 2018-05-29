@@ -39,7 +39,7 @@ const typeDefs=`
 		getUsers: String
 	},
 	type Mutation{
-		signup(firstname: String, lastname: String,email:String,password:String): Boolean
+		signup(firstname: String!, lastname: String!,email:String!,password:String!): Boolean
 		login(email:String,password:String):user
 		firstpage(email:String):sudokudetails
 		sendsudokudetails(gamewon:Int,timewon:String,email:String):Boolean

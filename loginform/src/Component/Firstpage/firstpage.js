@@ -18,30 +18,125 @@ class Firstpage extends Component {
     this.EnterNumber=this.EnterNumber.bind(this);
     this.startTimer=this.startTimer.bind(this);
     this.DifficultyLevel=this.DifficultyLevel.bind(this);
+    this.Hint=this.Hint.bind(this);
   }
 componentWillMount()
-{
+{debugger
+ 
+  // window.StoringValue=[["","","","","","","","",""],["","","","","","","","",""],["","","","","","","","",""]
+  //   ,["","","","","","","","",""],["","","","","","","","",""],
+  //   ["","","","","","","","",""],["","","","","","","","",""],
+  //   ["","","","","","","","",""],["","","","","","","","",""]];
+   
   debugger
+  // this.RandomGeneratingNumbers();
+  this.GeneratingRandomNumbers();
   this.SendingUserDetails();
   this.GettingHistory();
-  var x=((Math.floor(Math.random() * 2) + 1));
-  if(x==1){ 
-    window.StoringValue=[["","",3,"",7,"","","",5],[8,4,"",5,"","","","",3],[5,"","",8,"","","",2,6]
-    ,["","",4,1,"",5,"","",9],["",8,"","",6,"","",5,""],
-    [1,"","","","",2,6,"",""],[9,2,"","","",8,"",6,""],
-    [4,"","","","",9,"",3,7],["","","","",4,"",5,9,""]];
-    }
-  else
-    {
-    window.StoringValue=[["","","",3,"",2,"","",8],["","","","","","",4,5,3],["","","","",4,1,"","",""]
-    ,["","",7,8,"","",2,"",5],["",8,"",6,"",3,"",9,""],
-    [2,"","","","",5,8,"",""],[9,2,"",4,"","","",8,""],
-    [7,3,6,"","","","","",""],[4,"","",5,"",9,"","",""]];
-  }
+  // var x=((Math.floor(Math.random() * 2) + 1));
+  // if(x==1){ 
+  //   window.StoringValue=[["","",3,"",7,"","","",5],[8,4,"",5,"","","","",3],[5,"","",8,"","","",2,6]
+  //   ,["","",4,1,"",5,"","",9],["",8,"","",6,"","",5,""],
+  //   [1,"","","","",2,6,"",""],[9,2,"","","",8,"",6,""],
+  //   [4,"","","","",9,"",3,7],["","","","",4,"",5,9,""]];
+  //   }
+  // else
+  //   {
+  //   window.StoringValue=[["","","",3,"",2,"","",8],["","","","","","",4,5,3],["","","","",4,1,"","",""]
+  //   ,["","",7,8,"","",2,"",5],["",8,"",6,"",3,"",9,""],
+  //   [2,"","","","",5,8,"",""],[9,2,"",4,"","","",8,""],
+  //   [7,3,6,"","","","","",""],[4,"","",5,"",9,"","",""]];
+  // }
   this.setState({
   username:this.props.userdisplay
   })
 }
+GeneratingRandomNumbers()
+{
+   window.StoringValue = [ 
+    [5,3,4,6,7,8,9,1,2],
+    [6,7,2,1,9,5,3,4,8],
+    [1,9,8,3,4,2,5,6,7], 
+    [8,5,9,7,6,1,4,2,3], 
+    [4,2,6,8,5,3,7,9,1], 
+    [7,1,3,9,2,4,8,5,6],
+    [9,6,1,5,3,7,2,8,4],
+    [2,8,7,4,1,9,6,3,5],
+    [3,4,5,2,8,6,1,7,9] 
+  ]
+
+   window.SolutionValue = [ 
+    [5,3,4,6,7,8,9,1,2],
+    [6,7,2,1,9,5,3,4,8],
+    [1,9,8,3,4,2,5,6,7], 
+    [8,5,9,7,6,1,4,2,3], 
+    [4,2,6,8,5,3,7,9,1], 
+    [7,1,3,9,2,4,8,5,6],
+    [9,6,1,5,3,7,2,8,4],
+    [2,8,7,4,1,9,6,3,5],
+    [3,4,5,2,8,6,1,7,9] 
+  ]
+
+
+  var x=((Math.floor(Math.random() * 9) + 1));
+  var y=((Math.floor(Math.random() * 9) + 1));
+  while(x==y)
+  {
+    y=((Math.floor(Math.random() * 9) + 1));
+  }
+  for(var i=0;i<9;i++)
+  {
+    for(var j=0;j<9;j++)
+    {
+      if(window.StoringValue[i][j]==x)
+      { window.SolutionValue[i][j]=y;
+        window.StoringValue[i][j]=y;
+      }else
+      if(window.StoringValue[i][j]==y)
+      { window.SolutionValue[i][j]=x;
+        window.StoringValue[i][j]=x;
+      }
+    }
+  }
+  for(var i=0;i<45;i++)
+  {
+    var z=((Math.floor(Math.random() * 8) ));
+    var k=((Math.floor(Math.random() * 8) ));
+    window.StoringValue[z][k]="";
+  }
+}
+// RandomGeneratingNumbers()
+// {
+//   var count=0;
+//   var counter=0;
+//   for(var i=0;i<9;i++)
+//   {
+//     for(var j=0;j<9;j++)
+//     {
+//       var y=((Math.floor(Math.random() * 2) + 1));
+      
+//       if(y==1){
+//         var randomnumber=((Math.floor(Math.random() * 9) + 1));
+//         count=this.row(i,j,randomnumber);
+//         counter=this.box(i,j,randomnumber);
+//         if(count!=0||counter!=0)
+//         {
+          
+//           window.StoringValue[i][j]='';
+//           j--;
+//         }
+//         else
+//         {
+//           window.StoringValue[i][j]=randomnumber;
+//         }
+//       }
+//       else
+//       {
+//         window.StoringValue[i][j]='';
+//       }
+//     }
+//   }
+// }
 componentDidMount()
 { debugger
   this.startTimer();
@@ -52,11 +147,11 @@ componentDidMount()
     var secondindex=parseInt(idofcell%9);
     var value1=window.StoringValue[firstindex][secondindex];
     this.refs[cellid].value=value1;
-  if(value1!="")
-  {
-    this.refs[cellid].disabled=true;
-    this.refs[cellid].style.color="black";
-  }
+    if(value1!="")
+    {
+      this.refs[cellid].disabled=true;
+      this.refs[cellid].style.color="black";
+    }
   }
 }
 
@@ -69,12 +164,12 @@ startTimer(){
   if(s==59){m=m-1}
   if(m<0){
     alert('timer completed')
-   window.location.reload();}
+    window.location.reload();}
     var time=m+":"+s;
     this.setState({
       timer:time
     })
-  setTimeout(this.startTimer, 1000);
+  setTimeout(this.startTimer, 80000);
 }
 
 checkSecond(sec) {
@@ -157,7 +252,52 @@ async SendingUserDetails(){
   }
 }
 }
- 
+
+Hint(event)
+{ debugger
+  var count=0;
+  for(var i=0;i<81;i++){
+    var cellid=`ref${i}`;
+    var idofcell=i;
+    var firstindex=parseInt(idofcell/9);
+    var secondindex=parseInt(idofcell%9);
+    var value1=window.StoringValue[firstindex][secondindex];
+    this.refs[cellid].value=value1;
+    if(event!=null){
+  if(value1!="")
+  {      
+    this.refs[cellid].disabled=true;
+    this.refs[cellid].style.color="black";
+  }
+  else
+  {
+    value1=window.SolutionValue[firstindex][secondindex];
+    this.refs[cellid].value=value1;
+    this.refs[cellid].disabled=false;
+    this.refs[cellid].style.color="blue";
+  }
+}
+else{
+   if(value1!="")
+  {      
+    this.refs[cellid].disabled=true;
+    this.refs[cellid].style.color="black";
+  }
+  else{
+    this.refs[cellid].disabled=false;
+   this.refs[cellid].style.color="transparent";
+  }
+}
+
+if(count==0)
+{
+   setTimeout(this.Hint, 3000);
+  
+}
+count++;
+  
+}
+}
 EnterNumber(e,ref)
  { debugger
   
@@ -230,10 +370,9 @@ row(rowindex,colindex,value)
   {
     if((window.StoringValue[rowindex][j]==value)||(window.StoringValue[j][colindex]==value))
     {
-    count++;
+      count++;
     }
   }
-
   return count;
 }  
 
@@ -362,6 +501,7 @@ debugger
           </div>
         </div>
       </div>
+      <button id="hint" onClick={this.Hint}>Hint</button>
       <button id="easy" onClick={this.DifficultyLevel}>Easy</button>
       <button id="medium" onClick={this.DifficultyLevel}>Medium</button>
       <button id="difficult" onClick={this.DifficultyLevel}>Difficult</button>
@@ -372,6 +512,11 @@ debugger
     );
   }
 }
+const getUsers=gql`
+query{
+  getUsers
+}
+`
 const firstpage =gql`
 mutation($email:String){
   firstpage(email:$email){
@@ -396,7 +541,7 @@ mutation($email:String){
  }
 }
 `
-export default compose(graphql(gettinghistory,{name:'gettinghistory'}),
+export default compose(graphql(getUsers,{name:'GETUsers'}),graphql(gettinghistory,{name:'gettinghistory'}),
   graphql(sendsudokudetails,{name:'sudokugamedetails'}),
   graphql(firstpage, {name: 'firstpage'})
 

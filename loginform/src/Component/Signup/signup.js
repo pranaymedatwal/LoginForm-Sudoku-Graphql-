@@ -76,8 +76,8 @@ class Signup extends Component {
         </form>
         </div>
         </div>
-          </div>
-          </div>
+      </div>
+      </div>
          
       </div>
     );
@@ -85,7 +85,7 @@ class Signup extends Component {
 }
 
 const signup=gql`
-  mutation($firstname: String, $lastname: String,$email:String,$password:String){
+  mutation($firstname: String!, $lastname: String!,$email:String!,$password:String!){
     signup(firstname: $firstname,lastname: $lastname,email:$email,password:$password)
   }
 `;

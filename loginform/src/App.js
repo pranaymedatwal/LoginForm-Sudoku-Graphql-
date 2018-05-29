@@ -35,15 +35,14 @@ class App extends Component {
           </div>
         </nav>
        
-          <Switch>
-            <Route exact path='/' component={Home}/>
-            <Route path="/Login" exact render={(props) => (<Login user={this.userdetails.bind(this)} {...props}/>)} />
-            <Route exact path='/signup' component={Signup}/>
-            <Route path="/firstpage" exact render={(props) => (<Firstpage userdisplay={this.state.userdetail} {...props}/>)} />
-          </Switch>
-        </div>
+        <Switch>
+          <Route exact path='/' component={Home}/>
+          <Route path="/Login" exact render={(props) => (<Login user={this.userdetails.bind(this)} {...props}/>)} />
+          <Route exact path='/signup' component={Signup}/>
+          <Route path="/firstpage" exact render={(props) => (<Firstpage userdisplay={this.state.userdetail} {...props}/>)} />
+        </Switch>
+      </div>
        
-        
       </Router>
     );
   }
