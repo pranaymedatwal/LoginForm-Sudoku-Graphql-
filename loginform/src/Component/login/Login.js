@@ -30,55 +30,56 @@ async senddetails(event){
 
     console.log(response)
     this.authenticateuser(response.data.login);
+}
+ 
+authenticateuser(response)
+{  debugger
+  if(response!=null){
+    localStorage.setItem("id", response.email);
+    this.setState({
+     response:response
+    })
+    this.props.user(response)
+    this.props.history.push('/firstpage');
   }
- authenticateuser(response)
-  {debugger
-     if(response!=null){
-      localStorage.setItem("id", response.email);
-      this.setState({
-        response:response
-      })
-      this.props.user(response)
-     this.props.history.push('/firstpage');
-    }
-    else
-    {
-      this.setState({
-        authenticate:"wrong username or password"
-      });
-    }
+  else
+  {
+    this.setState({
+    authenticate:"wrong username or password"
+  });
+  }
 
-  }
+}
 
    render() {
       return (
 	      <div>
-	          <div className="rows">
+	        <div className="rows">
 	          <div className="col-sm-3">
 	          </div>
 	          <div className="col-sm-6">
-	          <div className="panel panel-success">
-            <div className="panel-heading">LOGIN</div>
-            <div className="panel-body">
-            <form onSubmit={this.senddetails}>
-            <div className="form-group">
+	            <div className="panel panel-success">
+              <div className="panel-heading">LOGIN</div>
+              <div className="panel-body">
+              <form onSubmit={this.senddetails}>
+              <div className="form-group">
 				      <label>Email address:</label>
 				      <input type="email" className="form-control" id="email" onChange={(event)=>this.setState({email:event.target.value})}/>
-				    </div>
-				    <div className="form-group">
+				      </div>
+				      <div className="form-group">
 				      <label>Password:</label>
 				      <input type="password" className="form-control" id="pwd" onChange={(event)=>this.setState({password:event.target.value})}/>
-				    </div>
-				    <p>{this.state.authenticate}</p>
-				    <div className="checkbox">
+				      </div>
+				        <p>{this.state.authenticate}</p>
+				      <div className="checkbox">
 				      <label><input id="check" type="checkbox"/> Remember me</label>
-				    </div>
+				      </div>
 				      <button type="submit" className="btn btn-default" >Log In</button>
 			      
-			       <button className="btn btn-default">	<Link to={'/signup'}>Sign Up</Link></button>
-             </form>
-             </div>
-            </div>
+			        <button className="btn btn-default">	<Link to={'/signup'}>Sign Up</Link></button>
+              </form>
+              </div>
+              </div>
 	          </div>
 			  	</div>
 	      </div>
