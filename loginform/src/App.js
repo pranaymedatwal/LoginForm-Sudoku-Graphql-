@@ -1,11 +1,11 @@
 import React,{ Component } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import Home from './Home';
-import Login from './Login';
-import Signup from './signup';
-import Firstpage from './firstpage';
-import userfirstpage from './userfirstpage';
+import Home from './Component/Home/Home.js';
+import Login from './Component/login/Login.js';
+import Signup from './Component/Signup/signup.js';
+import Firstpage from './Component/Firstpage/firstpage.js';
+
 
 class App extends Component {
   constructor(){
@@ -40,7 +40,6 @@ class App extends Component {
             <Route path="/Login" exact render={(props) => (<Login user={this.userdetails.bind(this)} {...props}/>)} />
             <Route exact path='/signup' component={Signup}/>
             <Route path="/firstpage" exact render={(props) => (<Firstpage userdisplay={this.state.userdetail} {...props}/>)} />
-            <Route exact path='/userfirstpage' component={userfirstpage}/>
           </Switch>
         </div>
        

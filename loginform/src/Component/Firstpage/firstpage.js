@@ -17,12 +17,13 @@ class Firstpage extends Component {
     };
     this.EnterNumber=this.EnterNumber.bind(this);
     this.startTimer=this.startTimer.bind(this);
+    this.DifficultyLevel=this.DifficultyLevel.bind(this);
   }
 componentWillMount()
-{debugger
- this.SendingUserDetails();
+{
+  debugger
+  this.SendingUserDetails();
   this.GettingHistory();
-
   var x=((Math.floor(Math.random() * 2) + 1));
   if(x==1){ 
     window.StoringValue=[["","",3,"",7,"","","",5],[8,4,"",5,"","","","",3],[5,"","",8,"","","",2,6]
@@ -42,7 +43,7 @@ componentWillMount()
   })
 }
 componentDidMount()
-{ debugger 
+{ debugger
   this.startTimer();
   for(var i=0;i<81;i++){
     var cellid=`ref${i}`;
@@ -81,8 +82,9 @@ checkSecond(sec) {
   if (sec < 0) {sec = "59"};
   return sec;
 }
+
 async GettingHistory()
-{debugger
+{
  var email=localStorage.getItem("id");
   const history={
     email:email
@@ -90,7 +92,7 @@ async GettingHistory()
   const response=await this.props.gettinghistory({
     variables:history
   });
-  console.log(response)
+  console.log(response);
   var usergamedetails=response.data.gettinghistory;
   console.log(usergamedetails);
   usergamedetails.shift();
@@ -113,10 +115,51 @@ async SendingUserDetails(){
     gamewon:response.data.firstpage.gamewon
    })
 }
- EnterNumber(e,ref)
-
-{ debugger
-
+ DifficultyLevel(e)
+{debugger
+  if(e.target.id=="difficult"){
+    window.StoringValue=[["","","","","","","","",""],["","","","","","",4,5,3],["","","","",4,1,"","",""]
+    ,["","",7,8,"","",2,"",5],["",8,"",6,"",3,"",9,""],
+    [2,"","","","",5,8,"",""],[9,2,"",4,"","","",8,""],
+    [7,3,6,"","","","","",""],[4,"","",5,"",9,"","",""]];
+  }else
+  if(e.target.id=='easy')
+  {
+    window.StoringValue=[[2,6,"",4,"",1,9,8,""],["","","",5,"",6,"","",3],[5,"","",8,"","","",2,6]
+    ,["","",4,1,"",5,"","",9],["",8,"","",6,"","",5,""],
+    [1,"","","","",2,6,"",""],[9,2,"","","",8,"",6,""],
+    [4,"","","","",9,"",3,7],["","","","",4,"",5,9,""]];
+   
+  }else
+  if(e.target.id=='medium')
+  {
+   window.StoringValue=[["","",3,"",7,"","","",5],[8,4,"",5,"","","","",3],[5,"","",8,"","","",2,6]
+    ,["","",4,1,"",5,"","",9],["",8,"","",6,"","",5,""],
+    [1,"","","","",2,6,"",""],[9,2,"","","",8,"",6,""],
+    [4,"","","","",9,"",3,7],["","","","",4,"",5,9,""]];
+    
+  }
+  for(var i=0;i<81;i++){
+    var cellid=`ref${i}`;
+    var idofcell=i;
+    var firstindex=parseInt(idofcell/9);
+    var secondindex=parseInt(idofcell%9);
+    var value1=window.StoringValue[firstindex][secondindex];
+    this.refs[cellid].value=value1;
+  if(value1!="")
+  {      
+    this.refs[cellid].disabled=true;
+    this.refs[cellid].style.color="black";
+  }
+  else{
+    this.refs[cellid].disabled=false;
+   this.refs[cellid].style.color="transparent";
+  }
+}
+}
+ 
+EnterNumber(e,ref)
+ { debugger
   
   var cellid=ref;
   cellid=parseInt(cellid);
@@ -138,11 +181,11 @@ async SendingUserDetails(){
   window.StoringValue[rowindex][colindex]=e.target.value;
  this.check();
  debugger
-  
-  
 }
- async check()
-{debugger
+  
+async check()
+{
+  debugger
   var cell=0;
   for(var i=0;i<81;i++){
     var cellid=`ref${i}`;
@@ -150,7 +193,8 @@ async SendingUserDetails(){
        cell++;
       }
   if(cell==81)
-  {console.log(this.state.gamewon)
+  {
+    console.log(this.state.gamewon)
     await this.setState({
       gamewon:this.state.gamewon+1,
       timewon:this.state.timer
@@ -180,19 +224,21 @@ async SendingUserDetails(){
 
 row(rowindex,colindex,value)
 {
-debugger
+  debugger
   var count=0;
-  for(var j=0;j<9;j++)
+  for(var j=0;j<9;j++) 
   {
     if((window.StoringValue[rowindex][j]==value)||(window.StoringValue[j][colindex]==value))
     {
-      count++;
+    count++;
     }
-}
-return count;
+  }
+
+  return count;
 }  
+
 box(rowindex,colindex,value)
-{debugger
+{ debugger
   var counter=0;
   var m,n,k,l;
   var rowcheck=parseInt(rowindex/3);
@@ -316,10 +362,12 @@ debugger
           </div>
         </div>
       </div>
-    
+      <button id="easy" onClick={this.DifficultyLevel}>Easy</button>
+      <button id="medium" onClick={this.DifficultyLevel}>Medium</button>
+      <button id="difficult" onClick={this.DifficultyLevel}>Difficult</button>
+      <br/>
      <button onClick={this.cleardata}> <Link to={'/'} >
       LogOut</Link></button>
-
     </div>
     );
   }
