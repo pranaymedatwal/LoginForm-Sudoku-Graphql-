@@ -98,10 +98,8 @@ const resolvers = {
 			console.log(data);
 		  const response=await UserSudokuDetails.find({"email":data.email}).sort({"gamewon":-1}).limit(1);
 		  console.log(  response);
-
-		  return response[0];
-
-		},
+      return response[0];
+    },
 		sendsudokudetails:async (root,data)=>{
 			console.log(data);
 			var EachUserSudokuDetails = new UserSudokuDetails({
