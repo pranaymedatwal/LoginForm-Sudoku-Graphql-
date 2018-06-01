@@ -6,8 +6,8 @@ import bodyParser from 'body-parser';
 import {makeExecutableSchema} from 'graphql-tools';
 import {graphqlExpress,graphiqlExpress} from 'apollo-server-express';
 import cors from 'cors';
-import typeDefs from "./typedef.js";
-import resolvers from "./resolver.js";
+import typeDefs from "./TypeDef/typedef.js";
+import resolvers from "./Resolver/resolver.js";
 
  app.listen(3040,function(){
    console.log("server listening");

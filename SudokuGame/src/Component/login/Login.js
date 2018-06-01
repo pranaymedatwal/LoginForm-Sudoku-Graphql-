@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import gql from 'graphql-tag';
 import { graphql,compose } from 'react-apollo';
 import "./login.css"
@@ -70,7 +70,7 @@ render() {
           <label>Password:</label>
           <input type="password" className="form-control" id="pwd" onChange={(event)=>this.setState({password:event.target.value})}/>
           </div>
-            <p>{this.state.authenticate}</p>
+            <p id="colorchange">{this.state.authenticate}</p>
           <div className="checkbox">
           <label><input id="check" type="checkbox"/> Remember me</label>
           </div>

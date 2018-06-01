@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { BrowserRouter as  Link } from 'react-router-dom';
 import gql from 'graphql-tag';
 import { graphql,compose } from 'react-apollo';
+import "./signup.css";
 
 class Signup extends Component {
   constructor(){
@@ -10,7 +10,8 @@ class Signup extends Component {
       firstname:"",
       lastname:"",
       email:"",
-      password:""
+      password:"",
+      authenticate:""
     };
     this.senddetails=this.senddetails.bind(this);
   }
@@ -27,8 +28,17 @@ class Signup extends Component {
       variables: userDetails
     });
     console.log(response);
+    if(response.data.signup){
     this.completedsignup(response.data.signup);
-  }
+    }
+    else
+    {
+      this.setState({
+        authenticate:"Email Address already exist"
+      })
+    }
+}
+
 
   completedsignup(response){
     console.log(response)
@@ -67,8 +77,9 @@ class Signup extends Component {
             <label htmlFor="pwd">Password:</label>
             <input type="password" className="form-control" id="pwd" onChange={(event) => this.setState({password:event.target.value})}/>
           </div>
+          <p id="colorchange">{this.state.authenticate}</p>
           <div className="checkbox">
-            <label><input type="checkbox"/>Remember me</label>
+            <label><input id="check" type="checkbox"/>Remember me</label>
           </div>
             <button type="submit" className="btn btn-default" >sign up</button>
            

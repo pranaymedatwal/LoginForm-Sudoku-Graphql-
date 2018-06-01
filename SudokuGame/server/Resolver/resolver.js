@@ -1,5 +1,5 @@
-import user from "./usermodel.js";
-import UserSudokuDetails from "./usersudokudetailsmodel.js";
+import user from "./Models/usermodel.js";
+import UserSudokuDetails from "./Models/usersudokudetailsmodel.js";
 const resolvers = {
   Query: {
     getUsers: (root, data) =>{
@@ -7,8 +7,12 @@ const resolvers = {
     }
   },
   Mutation: {
-    signup: (root, data) =>{
+    signup: async (root, data) =>{
       console.log(data);
+      const response=await user.findOne({email:data.email});
+      console.log(response); 
+      if(response===null){
+        console.log("hello");
       let userdata = new user({
       firstname:data.firstname,
       lastname:data.lastname,
@@ -23,6 +27,11 @@ const resolvers = {
       });
       EachUserSudokuDetails.save();
       return true;
+    }
+    else
+    {
+      return false;
+    }
     },
     login:async (root,data)=>{
       console.log(data);
@@ -52,7 +61,7 @@ const resolvers = {
       return true;
     },
     gettinghistory:async (root,data)=>{
-     const response=await UserSudokuDetails.find({"email":data.email});
+     const response=await UserSudokuDetails.find({"email":data.email}).limit(11);
      console.log(response)
      return response;
     }

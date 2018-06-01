@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import './firstpage.css';
+import './sudokugame.css';
 import gql from 'graphql-tag';
 import { graphql,compose } from 'react-apollo';
-
+import {box} from "./Boxcheck.js";
+import {row} from "./Rowcheck.js";
+import {column} from "./Columncheck.js";
+import {GeneratingRandomNumbers} from "./GeneratingRandomNumbers.js"
+import {HidingSomeNumbers} from "./HidingSomeNumbers.js";
 class Firstpage extends Component {
 	constructor()
 	{
@@ -21,91 +25,38 @@ class Firstpage extends Component {
 		this.Hint=this.Hint.bind(this);
 		this.OriginalForm=this.OriginalForm.bind(this);
 		this.GameOver=this.GameOver.bind(this);
+		this.StopDisplay=this.StopDisplay.bind(this);
 	}
 componentWillMount()
 {
-	this.GeneratingRandomNumbers();
+	GeneratingRandomNumbers();
 	this.SendingUserDetails();
 	this.GettingHistory();
   this.setState({
 	username:this.props.userdisplay
 	})
 }
-GeneratingRandomNumbers()
-{
-	window.StoringValue = [ 
-		[5,3,4,6,7,8,9,1,2],
-		[6,7,2,1,9,5,3,4,8],
-		[1,9,8,3,4,2,5,6,7], 
-		[8,5,9,7,6,1,4,2,3], 
-		[4,2,6,8,5,3,7,9,1], 
-		[7,1,3,9,2,4,8,5,6],
-		[9,6,1,5,3,7,2,8,4],
-		[2,8,7,4,1,9,6,3,5],
-		[3,4,5,2,8,6,1,7,9] 
-	]
 
-	window.SolutionValue = [ 
-		[5,3,4,6,7,8,9,1,2],
-		[6,7,2,1,9,5,3,4,8],
-		[1,9,8,3,4,2,5,6,7], 
-		[8,5,9,7,6,1,4,2,3], 
-		[4,2,6,8,5,3,7,9,1], 
-		[7,1,3,9,2,4,8,5,6],
-		[9,6,1,5,3,7,2,8,4],
-		[2,8,7,4,1,9,6,3,5],
-		[3,4,5,2,8,6,1,7,9] 
-	]
-
-
-	var x=((Math.floor(Math.random() * 9) + 1));
-	var y=((Math.floor(Math.random() * 9) + 1));
-	while(x==y)
-	{
-		y=((Math.floor(Math.random() * 9) + 1));
-	}
-	for(var i=0;i<9;i++)
-	{
-		for(var j=0;j<9;j++)
-		{
-			if(window.StoringValue[i][j]==x)
-			{ 
-				window.SolutionValue[i][j]=y;
-				window.StoringValue[i][j]=y;
-			}
-			else
-			if(window.StoringValue[i][j]==y)
-			{ 
-				window.SolutionValue[i][j]=x;
-				window.StoringValue[i][j]=x;
-			}
-		}
-	}
-}
-HidingSomeNumbers(h)
-{
-	for(var i=0;i<h;i++)
-	{
-		var z=((Math.floor(Math.random() * 8) ));
-		var k=((Math.floor(Math.random() * 8) ));
-		window.StoringValue[z][k]="";
-	}
-}
 componentDidMount()
-{ 
+{ window.stop=0;
 	this.refs.hint.style.display="none";
 	this.OriginalForm();
 }
+
 OriginalForm()
-{
+{ 
+	if(window.stop===0){
+  setTimeout(this.StopDisplay,1000)
+  window.stop++;
+  }
 	for(var i=0;i<81;i++){
 		var cellid=`ref${i}`;
 		var idofcell=i;
-		var firstindex=parseInt(idofcell/9);
-		var secondindex=parseInt(idofcell%9);
+		var firstindex=parseInt((idofcell/9),10);
+		var secondindex=parseInt((idofcell%9),10);
 		var value1=window.StoringValue[firstindex][secondindex];
 		this.refs[cellid].value=value1;
-	  if(value1!="")
+	  if(value1!=="")
 	  {      
 		  this.refs[cellid].disabled=true;
 		  this.refs[cellid].style.color="black";
@@ -115,6 +66,11 @@ OriginalForm()
 		  this.refs[cellid].style.color="transparent";
 	  }
   }
+ 
+}
+StopDisplay()
+{
+	this.refs.signedIn.style.display="none";
 }
 
 startTimer(){
@@ -122,7 +78,7 @@ startTimer(){
 	var timeArray = presentTime.split(/[:]+/);
 	var m = timeArray[0];
 	var s = this.checkSecond((timeArray[1] - 1));
-	if(s==59){m=m-1}
+	if(parseInt(s,10)===59){m=m-1}
 	if(m<0){
 		alert('timer completed')
 		window.location.reload();}
@@ -178,18 +134,18 @@ DifficultyLevel(e)
 	this.refs.medium.disabled="true";
 	this.refs.difficult.disabled="true";
 	
-	if(e.target.id=="difficult"){
- 	  this.HidingSomeNumbers(60);
+	if(e.target.id==="difficult"){
+ 	  HidingSomeNumbers(60);
 	}
 	else
-	if(e.target.id=='easy')
+	if(e.target.id==='easy')
 	{
-		this.HidingSomeNumbers(25);
+		HidingSomeNumbers(25);
 	}
 	else
-	if(e.target.id=='medium')
+	if(e.target.id==='medium')
 	{
-	 this.HidingSomeNumbers(40);
+	 HidingSomeNumbers(40);
 	}
   this.OriginalForm();
 }
@@ -203,16 +159,15 @@ GameOver()
 Hint(event)
 { 
 	this.refs.hint.disabled="true";
-	var count=0;
 	for(var i=0;i<81;i++){
 		var cellid=`ref${i}`;
 		var idofcell=i;
-		var firstindex=parseInt(idofcell/9);
-		var secondindex=parseInt(idofcell%9);
+		var firstindex=parseInt((idofcell/9),10);
+		var secondindex=parseInt((idofcell%9),10);
 		var value1=window.StoringValue[firstindex][secondindex];
 		this.refs[cellid].value=value1;
 		if(event!=null){
-		  if((this.refs[cellid].style.color=="black"))
+		  if((this.refs[cellid].style.color.toString()==="black"))
 		  {      
 			  this.refs[cellid].disabled=true;
 			  this.refs[cellid].style.color="black";
@@ -226,7 +181,7 @@ Hint(event)
 		  }
 	  }
 	  else{
-		  if((this.refs[cellid].style.color=="black"))
+		  if((this.refs[cellid].style.color.toString()==="black"))
 		  {      
 			  this.refs[cellid].disabled=true;
 			  this.refs[cellid].style.color="black";
@@ -246,17 +201,17 @@ Hint(event)
 EnterNumber(e,ref)
 { 
 	var cellid=ref;
-	cellid=parseInt(cellid);
+	cellid=parseInt((cellid),10);
 	var rowindex,colindex;
-	rowindex=parseInt(cellid/9);
+	rowindex=parseInt((cellid/9),10);
 	colindex=cellid%9;
 	cellid=`ref${ref}`;
 	var count,counter,counting;
-	count=this.row(rowindex,colindex,e.target.value);
-	counting=this.column(rowindex,colindex,e.target.value);
-	counter=this.box(rowindex,colindex,e.target.value);
+	count=row(rowindex,colindex,e.target.value);
+	counting=column(rowindex,colindex,e.target.value);
+	counter=box(rowindex,colindex,e.target.value);
 	
-	if(count!=0||counter!=0||counting!=0){
+	if(count!==0||counter!==0||counting!==0){
 		this.refs[cellid].style.color="red";
 	}
 	else
@@ -273,10 +228,10 @@ async check()
 	var cell=0;
 	for(var i=0;i<81;i++){
 		var cellid=`ref${i}`;
-			if((this.refs[cellid].style.color=="blue")||(this.refs[cellid].style.color=="black")){
+			if((this.refs[cellid].style.color.toString()==="blue")||(this.refs[cellid].style.color.toString()==="black")){
 			  cell++;
 			}
-	if(cell==81)
+	if(cell===81)
 	{
 		console.log(this.state.gamewon)
 		await this.setState({
@@ -294,16 +249,16 @@ Backtracking()
   for(var i=0;i<81;i++){
 	var cellid=`ref${i}`;
 	var idofcell=i;
-	var firstindex=parseInt(idofcell/9);
-	var secondindex=parseInt(idofcell%9);
+	var firstindex=parseInt((idofcell/9),10);
+	var secondindex=parseInt((idofcell%9),10);
 	var value1=window.StoringValue[firstindex][secondindex];
 	this.refs[cellid].value=value1;
-    if((this.refs[cellid].style.color=="red")&&(this.refs[cellid].value!=""))
+    if((this.refs[cellid].style.color.toString()==="red")&&(this.refs[cellid].value.toString()!==""))
     {      
 	    var count,counter,counting;
-      count=this.row(firstindex,secondindex,value1);
-      counter=this.box(firstindex,secondindex,value1);
-      counting=this.column(firstindex,secondindex,value1);
+      count=row(firstindex,secondindex,value1);
+      counter=box(firstindex,secondindex,value1);
+      counting=column(firstindex,secondindex,value1);
       if(count>1||counter>1||counting>1){
 	   	  this.refs[cellid].style.color="red";
       }
@@ -322,7 +277,7 @@ async sendingSudokuDetails()
 		gamewon:this.state.gamewon,
 		timewon:this.state.timewon
 	}
-	const response =await this.props.sudokugamedetails({
+  this.props.sudokugamedetails({
 		variables: sudokudetails
 	});
 }
@@ -332,101 +287,15 @@ cleardata()
 	localStorage.clear();
 }
 
-row(rowindex,colindex,value)
-{
-	var count=0;
-	for(var j=0;j<9;j++) 
-	{
-		if((window.StoringValue[rowindex][j]==value))
-		{
-			count++;
-		}
-	}
-	return count;
-} 
-column(rowindex,colindex,value)
-{
-	var counting=0;
-	for(var j=0;j<9;j++)
-	{
-		if((window.StoringValue[j][colindex]==value))
-		{
-			counting++;
-		}
-	}
-	return counting;
-}
 
-box(rowindex,colindex,value)
-{ 
-	var counter=0;
-	var m,n,k,l;
-	var rowcheck=parseInt(rowindex/3);
-	var columncheck=parseInt(colindex/3);
-	if(rowcheck==0)
-		{
-		if(columncheck==0){
-			m=0,n=0,k=3,l=3;
-		}
-		else
-		if(columncheck==1)
-		{
-		m=0,n=3,k=3,l=6;
-		}
-		else
-		if(columncheck==2){
-		m=0,n=6,k=3,l=9;
-		}
-	}
-	else
-	if(rowcheck==1)
-		{
-		if(columncheck==0){
-			m=3,n=0,k=6,l=3;
-		}
-		else
-		if(columncheck==1)
-		{
-		m=3,n=3,k=6,l=6;
-		}
-		else
-		if(columncheck==2){
-		m=3,n=6,k=6,l=9;
-		}
-		}
-		else
-	if(rowcheck==2){
-		if(columncheck==0){
-			m=6,n=0,k=9,l=3;
-		}
-		else
-		if(columncheck==1)
-		{
-			m=6,n=3,k=9,l=6;
-		}
-		else
-		if(columncheck==2){
-			m=6,n=6,k=9,l=9;
-		}
-	}
 
-	for(var i=m;i<k;i++)
-	{
-		for(var j=n;j<l;j++)
-		{
-			if(window.StoringValue[i][j]==value)
-			{
-				counter++;
-			}
-		}
-	}
-		return counter;
-}
 render() {
 	var row =[0,9,18,27,36,45,54,63,72],col =[0,1,2,3,4,5,6,7,8];
 		return (
 		<div>
 		<div id="overlay" ref="overlay" onClick={this.GameOver}><b><h1 id="text">YOU WON</h1></b></div>
+		<div id="signedIn" ref="signedIn"><b><h1 id="SignedIn">Signing In Successfully  <a  className="btn btn-success">
+          <span className="glyphicon glyphicon-ok"></span> </a><br/> {this.state.username.firstname} </h1></b></div>
 			<h1>Hello !</h1>
 			<h6>{this.state.username.firstname}</h6>
 			<h6>{this.state.username.email}</h6>

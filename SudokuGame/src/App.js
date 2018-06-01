@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Home from './Component/Home/Home.js';
 import Login from './Component/login/Login.js';
 import Signup from './Component/Signup/signup.js';
-import Firstpage from './Component/Firstpage/firstpage.js';
+import Firstpage from './Component/sudoku/sudokugame.js';
 
 
 class App extends Component {
