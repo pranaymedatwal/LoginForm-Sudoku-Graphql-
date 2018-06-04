@@ -8,5 +8,5 @@ exports.column=(rowindex,colindex,value)=>
 			counting++;
 		}
 	}
-	return counting;
+	return countin;
 }
