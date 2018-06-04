@@ -38,7 +38,8 @@ componentWillMount()
 }
 
 componentDidMount()
-{ window.stop=0;
+{ 
+	window.stop=0;
 	this.refs.hint.style.display="none";
 	this.OriginalForm();
 }
@@ -66,7 +67,6 @@ OriginalForm()
 		  this.refs[cellid].style.color="transparent";
 	  }
   }
- 
 }
 StopDisplay()
 {
@@ -295,19 +295,22 @@ render() {
 		<div>
 		<div id="overlay" ref="overlay" onClick={this.GameOver}><b><h1 id="text">YOU WON</h1></b></div>
 		<div id="signedIn" ref="signedIn"><b><h1 id="SignedIn">Signing In Successfully  <a  className="btn btn-success">
-          <span className="glyphicon glyphicon-ok"></span> </a><br/> {this.state.username.firstname} </h1></b></div>
-			<h1>Hello !</h1>
-			<h6>{this.state.username.firstname}</h6>
-			<h6>{this.state.username.email}</h6>
-			<div id="body1" className="container">
+      <span className="glyphicon glyphicon-ok"></span> </a><br/> {this.state.username.firstname} </h1></b></div>
+			<div id="body1" className="container-fluid">
 				<div className="row">
 					<div className="col-sm-4">
-						<h1 id="timer">{this.state.timer}</h1>
+					<h1>Hello !</h1>
+			    <h6>{this.state.username.firstname}</h6>
+		    	<h6>{this.state.username.email}</h6>
+					<h1 id="timer">{this.state.timer}</h1>
 					</div>
-					<div className=" col-sm-2">
-						<h1><b className="label label-default">SUDOKU</b></h1>
+					<div className=" col-sm-4">
+						<h1 className="heading"><b>SUDOKU</b></h1>
 					</div>
-				</div>
+					<div className="col-sm-3">
+					<h1 className="bg-info"><b>Instructions</b></h1>
+				  </div>
+				  </div>
 				<br/>
 				<div className="row">
 					<div className="col-sm-3">
@@ -334,8 +337,15 @@ render() {
 							</tbody>
 						</table>
 					</div>
-					<div >
-					<table className="table table-bordered">
+					<div className="col-xs-1">
+					</div>
+          <div className="col-sm-4 colorcode">
+          <h3 className="text-info"> 1. Click On <b>Easy , Medium or Difficult</b> to start the game .</h3>
+          <h3 className="text-info"> 2. <b>Hint</b> Will be Available Only Once .</h3>
+          <h3 className="text-info"> 3. <b>Timer</b> Will Start As You Start the game.</h3>
+          </div>
+					<div>
+					<table className="table table-striped">
 						<thead>
 							<tr>
 							<th>GameWon</th>
@@ -358,7 +368,6 @@ render() {
 					</div>
 				</div>
 			</div>
-			
 			<br/>
 		 <button className="btn btn-danger" onClick={this.cleardata}> <Link to={'/'} >
 			LogOut</Link></button>

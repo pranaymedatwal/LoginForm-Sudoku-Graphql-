@@ -75,7 +75,7 @@ render() {
           <label><input id="check" type="checkbox"/> Remember me</label>
           </div>
           <button type="submit" className="btn btn-default" >Log In</button>
-          <button className="btn btn-default">  <Link to={'/signup'}>Sign Up</Link></button>
+          <button className="btn btn-default" >  <Link to={'/signup'}>Sign Up</Link></button>
           </form>
           </div>
           </div>
