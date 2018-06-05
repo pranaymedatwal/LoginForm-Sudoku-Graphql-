@@ -1,83 +1,83 @@
 td {
-	border: 2px solid dimgrey;
-	height: 30px;
-	width: 30px;
-	font-size: 15px;
-	
+  border: 2px solid dimgrey;
+  height: 30px;
+  width: 30px;
+  font-size: 15px;
+  
 }
 .cellshow{
-	background-color: peachpuff;
-	color:black;
+  background-color: peachpuff;
+  color:black;
 }
 body
 {
-	background-image: url("dynamicsudoku.jpeg");
-	background-repeat: no-repeat;
-	background-size: cover;
+  background-image: url("dynamicsudoku.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 .button{
-	background-color:gray;
-	color:white;
+  background-color:gray;
+  color:white;
 }
 .design
 {
-	background-color: grey;
+  background-color: grey;
 }
 .heading
 {
-	text-shadow: 4px 2px grey;
+  text-shadow: 4px 2px grey;
 }
 input
 {
-	height: 30px;
-	width: 30px;
+  height: 30px;
+  width: 30px;
 }
 #overlay {
-	position: fixed;
-	display: none;
-	width: 100%;
-	height: 100%;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background-color: rgba(0,0,0,0.5);
-	z-index: 2;
-	cursor: pointer;
+  position: fixed;
+  display: none;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 2;
+  cursor: pointer;
 }
 
 #text{
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	font-size: 150px;
-	color: black;
-	transform: translate(-50%,-50%);
-	-ms-transform: translate(-50%,-50%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 150px;
+  color: black;
+  transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
 }
 #colorChange{
-	color:green;
+  color:green;
 }
 #signedIn {
-	position: fixed;
-	display: block;
-	width: 100%;
-	height: 100%;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background-color: rgba(0,0,0,1);
-	z-index: 2;
-	cursor: pointer;
+  position: fixed;
+  display: block;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,1);
+  z-index: 2;
+  cursor: pointer;
 }
 
 #SignedIn{
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	font-size: 50px;
-	color: green;
-	transform: translate(-50%,-50%);
-	-ms-transform: translate(-50%,-50%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 50px;
+  color: green;
+  transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
 }
