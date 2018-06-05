@@ -28,13 +28,13 @@ class Signup extends Component {
 			variables: userDetails
 		});
 		console.log(response);
-		if(response.data.signup){
-		this.completedsignup(response.data.signup);
+		if(response.data.signup==="signup"){
+		this.completedsignup(true);
 		}
 		else
 		{
 			this.setState({
-				authenticate:"Email Address already exist"
+				authenticate:response.data.signup
 			})
 		}
 }
@@ -73,11 +73,11 @@ class Signup extends Component {
 						<label htmlFor="email">Email address:</label>
 						<input type="email" className="form-control" id="email" onChange={(event) => this.setState({email:event.target.value})}/>
 					</div>
-					 <p id="colorchange">{this.state.authenticate}</p>
 					<div className="form-group">
 						<label htmlFor="pwd">Password:</label>
 						<input type="password" className="form-control" id="pwd" onChange={(event) => this.setState({password:event.target.value})}/>
 					</div>
+           <p id="colorchange">{this.state.authenticate}</p>
 					<div className="checkbox">
 						<label><input id="check" type="checkbox"/>Remember me</label>
 					</div>

@@ -15,9 +15,10 @@ class Firstpage extends Component {
     this.state={
     username:"",
     gamewon:0,
-    timer:"20:0",
+    timer:"0:0",
     timewon:"",
     gamedetails:[]
+
     };
     this.EnterNumber=this.EnterNumber.bind(this);
     this.startTimer=this.startTimer.bind(this);
@@ -26,6 +27,7 @@ class Firstpage extends Component {
     this.OriginalForm=this.OriginalForm.bind(this);
     this.GameOver=this.GameOver.bind(this);
     this.StopDisplay=this.StopDisplay.bind(this);
+    this.cleardata=this.cleardata.bind(this);
   }
 componentWillMount()
 {
@@ -38,7 +40,8 @@ componentWillMount()
 }
 
 componentDidMount()
-{ 
+{ var token=localStorage.getItem("TokenId");
+  this.props.userPage(token);
   window.stop=0;
   this.refs.hint.style.display="none";
   this.OriginalForm();
@@ -46,9 +49,12 @@ componentDidMount()
 
 OriginalForm()
 { 
-  if(window.stop===0){
-  setTimeout(this.StopDisplay,1000)
-  window.stop++;
+  if(this.state.username!==""){
+    this.refs.signedIn.style.display="block";
+    if(window.stop===0){
+    setTimeout(this.StopDisplay,1000)
+    window.stop++;
+    }
   }
   for(var i=0;i<81;i++){
     var cellid=`ref${i}`;
@@ -76,12 +82,13 @@ StopDisplay()
 startTimer(){
   var presentTime = this.state.timer
   var timeArray = presentTime.split(/[:]+/);
-  var m = timeArray[0];
-  var s = this.checkSecond((timeArray[1] - 1));
-  if(parseInt(s,10)===59){m=m-1}
-  if(m<0){
-    alert('timer completed')
-    window.location.reload();}
+  var m = parseInt(timeArray[0]);
+  var s = this.checkSecond((parseInt(timeArray[1]) + 1));
+  if(parseInt(s,10)===59)
+  {
+    m=m+1;
+    s=0;
+  }
     var time=m+":"+s;
     this.setState({
       timer:time
@@ -237,7 +244,7 @@ async check()
     await this.setState({
       gamewon:this.state.gamewon+1,
       timewon:this.state.timer
-    })
+    });
     console.log(this.state.gamewon);
     await this.sendingSudokuDetails();
     this.refs.overlay.style.display="block";
@@ -283,7 +290,7 @@ async sendingSudokuDetails()
 }
 
 cleardata()
-{
+{ this.props.userPage("");
   localStorage.clear();
 }
 
@@ -295,10 +302,22 @@ render() {
     <div>
     <div id="overlay" ref="overlay" onClick={this.GameOver}><b><h1 id="text">YOU WON</h1></b></div>
     <div id="signedIn" ref="signedIn"><b><h1 id="SignedIn">Signing In Successfully  <a  className="btn btn-success">
-        <span className="glyphicon glyphicon-ok"></span> </a><br/> {this.state.username.firstname} </h1></b></div>
-      <h1>Hello !</h1>
-      <h6>{this.state.username.firstname}</h6>
-      <h6>{this.state.username.email}</h6>
+      <span className="glyphicon glyphicon-ok"></span> </a><br/> {this.state.username.firstname} </h1></b></div>
+    <div className="container-fluid">
+      <div className="row">
+        <div className="col-sm-4">
+          <h1>Hello !</h1>
+          <h6>{this.state.username.firstname}</h6>
+          <h6>{this.state.username.email}</h6>
+        </div>
+        <div className="col-sm-7">
+        </div>
+        <div className="col-sm-1">
+          <button className="btn btn-danger" onClick={this.cleardata}> <Link to={'/'} >
+          LogOut</Link></button>
+        </div>
+     </div>
+    </div>
       <div id="body1" className="container-fluid">
         <div className="row">
           <div className="col-sm-4">
@@ -367,10 +386,7 @@ render() {
           </div>
         </div>
       </div>
-      
       <br/>
-     <button className="btn btn-danger" onClick={this.cleardata}> <Link to={'/'} >
-      LogOut</Link></button>
     </div>
     );
   }

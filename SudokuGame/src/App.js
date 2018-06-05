@@ -13,24 +13,45 @@ class App extends Component {
     this.state={
       userdetail:""
     }
+    this.userdetails=this.userdetails.bind(this);
   }
-  userdetails(response)
+  async userdetails(response)
   {
     debugger
-    this.setState({
-    userdetail:response
-   })
+    var Token=response;
+    localStorage.setItem("TokenId", Token);
+    var TokenId=localStorage.getItem("TokenId");
+    await this.setState({
+      userdetail:TokenId
+    });
+   
+    if((this.state.userdetail!=="")){
+      this.refs.loginLink.style.display="none";
+    }
+    else
+    {
+      this.refs.loginLink.style.display="block";
+    }
   }
   render() {
+    var check1;
+    var check=localStorage.getItem("TokenId");
+    if(check)
+    {
+      check1=0;
+    }else{
+      check1=1;
+    }
     return (
       <Router>
       
       <div>
-        <nav className="navbar navbar-inverse">
+        <nav ref="loginLink" className="navbar navbar-inverse">
           <div className="container-fluid">
-            <ul className="nav navbar-nav">
+            <ul  className="nav navbar-nav">
               <li ><Link to={'/'}>Home</Link></li>
-              <li><Link to={'/Login'}>Login</Link></li>
+              <li ><Link  to={'/Login'}>Login</Link></li>
+              
             </ul>
           </div>
         </nav>
@@ -39,7 +60,7 @@ class App extends Component {
           <Route exact path='/' component={Home}/>
           <Route path="/Login" exact render={(props) => (<Login user={this.userdetails.bind(this)} {...props}/>)} />
           <Route exact path='/signup' component={Signup}/>
-          <Route path="/firstpage" exact render={(props) => (<Firstpage userdisplay={this.state.userdetail} {...props}/>)} />
+          {check && <Route path="/firstpage" exact render={(props) => (<Firstpage userdisplay={this.state.userdetail} userPage={this.userdetails.bind(this)} {...props}/>)}/>}
         </Switch>
       </div>
        

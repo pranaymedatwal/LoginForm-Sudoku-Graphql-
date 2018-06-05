@@ -11,27 +11,33 @@ const resolvers = {
       console.log(data);
       const response=await user.findOne({email:data.email});
       console.log(response); 
-      if(response===null){
-        console.log("hello");
-      let userdata = new user({
-      firstname:data.firstname,
-      lastname:data.lastname,
-      email:data.email,
-      password:data.password,
-      });
-      userdata.save();
-      let EachUserSudokuDetails = new UserSudokuDetails({
-      email:data.email,
-      gamewon:0,
-      timer:"0"
-      });
-      EachUserSudokuDetails.save();
-      return true;
-    }
-    else
-    {
-      return false;
-    }
+      if((response===null)){
+        if((data.email!=='')&&(data.password!=='')&&(data.lastname)&&(data.firstname))
+        {
+          console.log("hello");
+          let userdata = new user({
+          firstname:data.firstname,
+          lastname:data.lastname,
+          email:data.email,
+          password:data.password,
+          });
+          userdata.save();
+          let EachUserSudokuDetails = new UserSudokuDetails({
+          email:data.email,
+          gamewon:0,
+          timer:"0"
+          });
+          EachUserSudokuDetails.save();
+          return "signup";
+        }else
+        {
+          return "Fields are mandatory";
+        }
+      }
+      else
+      {
+        return "Email Address Already Exist";
+      }
     },
     login:async (root,data)=>{
       console.log(data);
