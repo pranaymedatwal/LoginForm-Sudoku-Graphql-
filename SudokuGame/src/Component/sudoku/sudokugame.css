@@ -1,9 +1,9 @@
 td {
-  border: 2px solid dimgrey;
-  height: 30px;
-  width: 30px;
-  font-size: 15px;
-  
+	border: 2px solid dimgrey;
+	height: 30px;
+	width: 30px;
+	font-size: 15px;
+	
 }
 .cellshow{
 	background-color: peachpuff;
@@ -56,7 +56,7 @@ input
 	-ms-transform: translate(-50%,-50%);
 }
 #colorChange{
-  color:green;
+	color:green;
 }
 #signedIn {
 	position: fixed;
