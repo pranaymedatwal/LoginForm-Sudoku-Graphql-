@@ -1,12 +1,6 @@
-td {
-  border: 2px solid dimgrey;
-  height: 30px;
-  width: 30px;
-  font-size: 15px;
-  
-}
-.cellshow{
-  background-color: peachpuff;
+
+.cell{
+/*  background-color: dimgrey;*/
   color:black;
 }
 body

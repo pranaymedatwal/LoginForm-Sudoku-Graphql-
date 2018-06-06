@@ -17,7 +17,9 @@ class Firstpage extends Component {
     gamewon:0,
     timer:"0:0",
     timewon:"",
-    gamedetails:[]
+    gamedetails:[],
+    user:"",
+    greeting:"Hello"
 
     };
     this.EnterNumber=this.EnterNumber.bind(this);
@@ -28,6 +30,8 @@ class Firstpage extends Component {
     this.GameOver=this.GameOver.bind(this);
     this.StopDisplay=this.StopDisplay.bind(this);
     this.cleardata=this.cleardata.bind(this);
+    this.MouseOver=this.MouseOver.bind(this);
+    this.MouseOut=this.MouseOut.bind(this);
   }
 componentWillMount()
 {
@@ -35,27 +39,48 @@ componentWillMount()
   this.SendingUserDetails();
   this.GettingHistory();
   this.setState({
-  username:this.props.userdisplay
+  username:this.props.userdisplay,
+  user:this.props.usershow
   })
+  var token=localStorage.getItem("TokenId");
+  this.props.userPage({email:token});
 }
 
 componentDidMount()
-{ var token=localStorage.getItem("TokenId");
-  this.props.userPage(token);
-  window.stop=0;
+{
   this.refs.hint.style.display="none";
   this.OriginalForm();
-}
-
-OriginalForm()
-{ 
+  
+  window.stop=0;
   if(this.state.username!==""){
     this.refs.signedIn.style.display="block";
     if(window.stop===0){
-    setTimeout(this.StopDisplay,1000)
-    window.stop++;
+      setTimeout(this.StopDisplay,1000)
+      window.stop++;
     }
   }
+}
+MouseOver(event)
+{ if(event){
+  this.setState({
+    greeting:"Hope You Are Enjoying !"
+  })}
+}
+MouseOut(event)
+{
+  this.setState({
+    greeting:"Hello"
+  })
+}
+OriginalForm()
+{ 
+  var arrayForSudokuColor=[0,1,2,9,10,11,18,19,20,6,7,8,15,16,17,24,25,26,30,31,32,39,40,41,48,49,50,54,55,56,63,64,65,72,73,74,60,61,62,69,70,71,78,79,80];
+  var SudokuColor=document.getElementsByClassName("cell");
+  for(var k=0;k<45;k++){
+    var z=arrayForSudokuColor[k]
+    SudokuColor[z].bgColor="grey";
+  }
+  
   for(var i=0;i<81;i++){
     var cellid=`ref${i}`;
     var idofcell=i;
@@ -79,11 +104,13 @@ StopDisplay()
   this.refs.signedIn.style.display="none";
 }
 
-startTimer(){
+async startTimer(){
+  debugger
+  if(this.state.timer!==this.state.timewon){
   var presentTime = this.state.timer
   var timeArray = presentTime.split(/[:]+/);
-  var m = parseInt(timeArray[0]);
-  var s = this.checkSecond((parseInt(timeArray[1]) + 1));
+  var m = parseInt(timeArray[0],10); 
+  var s = this.checkSecond((parseInt(timeArray[1],10) + 1));
   if(parseInt(s,10)===59)
   {
     m=m+1;
@@ -93,7 +120,10 @@ startTimer(){
     this.setState({
       timer:time
     })
+
   setTimeout(this.startTimer, 1000);
+   }
+
 }
 
 checkSecond(sec) {
@@ -129,7 +159,7 @@ async SendingUserDetails(){
   });
   console.log(response);
   await this.setState({
-  gamewon:response.data.firstpage.gamewon
+    gamewon:response.data.firstpage.gamewon
   })
 }
 
@@ -290,8 +320,9 @@ async sendingSudokuDetails()
 }
 
 cleardata()
-{ this.props.userPage("");
+{ 
   localStorage.clear();
+  this.props.userPage({email:""});
 }
 
 
@@ -302,12 +333,12 @@ render() {
     <div>
     <div id="overlay" ref="overlay" onClick={this.GameOver}><b><h1 id="text">YOU WON</h1></b></div>
     <div id="signedIn" ref="signedIn"><b><h1 id="SignedIn">Signing In Successfully  <a  className="btn btn-success">
-      <span className="glyphicon glyphicon-ok"></span> </a><br/> {this.state.username.firstname} </h1></b></div>
+      <span className="glyphicon glyphicon-ok"></span> </a><br/> {this.state.username} </h1></b></div>
     <div className="container-fluid">
       <div className="row">
         <div className="col-sm-4">
-          <h1>Hello !</h1>
-          <h6>{this.state.username.firstname}</h6>
+          <h1 onMouseOver={this.MouseOver} onMouseOut={this.MouseOut} ref="greeting">{this.state.greeting}</h1>
+          <h6>{this.state.username}</h6>
           <h6>{this.state.username.email}</h6>
         </div>
         <div className="col-sm-7">

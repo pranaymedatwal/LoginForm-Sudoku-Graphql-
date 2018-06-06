@@ -6,7 +6,6 @@ import Login from './Component/login/Login.js';
 import Signup from './Component/Signup/signup.js';
 import Firstpage from './Component/sudoku/sudokugame.js';
 
-
 class App extends Component {
   constructor(){
     super();
@@ -16,15 +15,13 @@ class App extends Component {
     this.userdetails=this.userdetails.bind(this);
   }
   async userdetails(response)
-  {
-    debugger
-    var Token=response;
+  {debugger
+    var Token=response.email;
     localStorage.setItem("TokenId", Token);
     var TokenId=localStorage.getItem("TokenId");
     await this.setState({
       userdetail:TokenId
     });
-   
     if((this.state.userdetail!=="")){
       this.refs.loginLink.style.display="none";
     }
@@ -39,7 +36,8 @@ class App extends Component {
     if(check)
     {
       check1=0;
-    }else{
+    }
+    else{
       check1=1;
     }
     return (
@@ -51,16 +49,15 @@ class App extends Component {
             <ul  className="nav navbar-nav">
               <li ><Link to={'/'}>Home</Link></li>
               <li ><Link  to={'/Login'}>Login</Link></li>
-              
             </ul>
           </div>
         </nav>
        
         <Switch>
           <Route exact path='/' component={Home}/>
-          <Route path="/Login" exact render={(props) => (<Login user={this.userdetails.bind(this)} {...props}/>)} />
+          {check1 ? <Route path="/Login" exact render={(props) => (<Login user={this.userdetails.bind(this)} {...props}/>)} />:<Route path="/login" exact render={(props) => (<Firstpage userdisplay={this.state.userdetail} userPage={this.userdetails.bind(this)} {...props}/>)}/>}
           <Route exact path='/signup' component={Signup}/>
-          {check && <Route path="/firstpage" exact render={(props) => (<Firstpage userdisplay={this.state.userdetail} userPage={this.userdetails.bind(this)} {...props}/>)}/>}
+          {check ? <Route path="/firstpage" exact render={(props) => (<Firstpage userdisplay={this.state.userdetail} usershow={this.state.user} userPage={this.userdetails.bind(this)} {...props}/>)}/>: <Route path="/firstpage" exact render={(props) => (<Login user={this.userdetails.bind(this)} {...props}/>)} />}
         </Switch>
       </div>
        
