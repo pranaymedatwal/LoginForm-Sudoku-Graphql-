@@ -67,7 +67,7 @@ class Signup extends Component {
 					</div>
 					<div className="form-group">
 						<label htmlFor="lname">Last Name:</label>
-						<input type="text" className="form-control" id="lastname" onChange={(event) => this.setState({lastname:event.target.value})}/>
+						<input type="text"  className="form-control" id="lastname" onChange={(event) => this.setState({lastname:event.target.value})}/>
 					</div>
 					<div className="form-group">
 						<label htmlFor="email">Email address:</label>
@@ -75,7 +75,7 @@ class Signup extends Component {
 					</div>
 					<div className="form-group">
 						<label htmlFor="pwd">Password:</label>
-						<input type="password" className="form-control" id="pwd" onChange={(event) => this.setState({password:event.target.value})}/>
+						<input type="password" pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$"  className="form-control" id="pwd" onChange={(event) => this.setState({password:event.target.value})}/>
 					</div>
            <p id="colorchange">{this.state.authenticate}</p>
 					<div className="checkbox">

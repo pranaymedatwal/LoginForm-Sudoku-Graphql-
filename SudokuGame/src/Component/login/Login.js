@@ -26,14 +26,12 @@ async senddetails(event){
     const response = await this.props.login({
       variables: LoginDetails
     });
-    debugger
-
     console.log(response)
     this.authenticateuser(response.data.login);
 }
  
 authenticateuser(response)
-{  debugger
+{  
   if(response!=null){
     localStorage.setItem("id", response.email);
     this.setState({
@@ -75,7 +73,7 @@ render() {
           <label><input id="check" type="checkbox"/> Remember me</label>
           </div>
           <button type="submit" className="btn btn-default" >Log In</button>
-          <button className="btn btn-default" >  <Link to={'/signup'}>Sign Up</Link></button>
+          <Link to={'/signup'}><button className="btn btn-default">Sign Up</button></Link>
           </form>
           </div>
           </div>
