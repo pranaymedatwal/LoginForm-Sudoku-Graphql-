@@ -12,26 +12,43 @@ const resolvers = {
       const response=await user.findOne({email:data.email});
       console.log(response); 
       if((response===null)){
-        if((data.email!=='')&&(data.password!=='')&&(data.lastname)&&(data.firstname))
+        if(data.email!==''){
+          if(data.password!==''){
+            if(data.firstname!==""){
+              if(data.lastname!==""){
+                console.log("hello");
+                let userdata = new user({
+                firstname:data.firstname,
+                lastname:data.lastname,
+                email:data.email,
+                password:data.password,
+                });
+                userdata.save();
+                let EachUserSudokuDetails = new UserSudokuDetails({
+                email:data.email,
+                gamewon:0,
+                timer:"0"
+                });
+                EachUserSudokuDetails.save();
+                return "signup";
+              }
+              else{
+                return "lastname is mandatory";
+              }
+            }
+            else
+            {
+             return "firstname is mandatory";
+            }
+          }
+          else
+          {
+            return "password is mandatory";
+          }
+        }
+        else
         {
-          console.log("hello");
-          let userdata = new user({
-          firstname:data.firstname,
-          lastname:data.lastname,
-          email:data.email,
-          password:data.password,
-          });
-          userdata.save();
-          let EachUserSudokuDetails = new UserSudokuDetails({
-          email:data.email,
-          gamewon:0,
-          timer:"0"
-          });
-          EachUserSudokuDetails.save();
-          return "signup";
-        }else
-        {
-          return "Fields are mandatory";
+          return "Email Address is mandatory";
         }
       }
       else
