@@ -78,9 +78,6 @@ class Signup extends Component {
 						<input type="password" pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$"  className="form-control" id="pwd" onChange={(event) => this.setState({password:event.target.value})}/>
 					</div>
            <p id="colorchange">{this.state.authenticate}</p>
-					<div className="checkbox">
-						<label><input id="check" type="checkbox"/>Remember me</label>
-					</div>
 						<button type="submit" className="btn btn-default" >sign up</button>
 					 
 					<p id="demo"></p>
