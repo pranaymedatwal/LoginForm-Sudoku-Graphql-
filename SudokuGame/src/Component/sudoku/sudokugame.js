@@ -345,7 +345,7 @@ render() {
         <div className="col-sm-7">
         </div>
         <div className="col-sm-1">
-          <Link to={'/'} > <button className="btn btn-danger" onClick={this.cleardata}> 
+          <Link to={'/login'} > <button className="btn btn-danger" onClick={this.cleardata}> 
           LogOut</button></Link>
         </div>
      </div>

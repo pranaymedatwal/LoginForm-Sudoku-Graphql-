@@ -1,7 +1,6 @@
 import React,{ Component } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import Home from './Component/Home/Home.js';
 import Login from './Component/login/Login.js';
 import Signup from './Component/Signup/signup.js';
 import Firstpage from './Component/sudoku/sudokugame.js';
@@ -17,7 +16,7 @@ class App extends Component {
     this.HideLinks=this.HideLinks.bind(this);
   }
   async userdetails(response)
-  {debugger
+  {
     var Token="";
     if(!localStorage.getItem("TokenId")){
       for(var i=0;i<9;i++)
@@ -37,18 +36,6 @@ class App extends Component {
   async HideLinks(response)
   {
     if(response!=="logout"){
-     await this.setState({
-        ToggleNavBar:"hide"
-      });
-    }else
-    {
-      this.setState({
-        ToggleNavBar:"Show"    
-      });
-    }
-  }
-  async hidenavbar(response){
-    if(response!=="logout"){
       await this.setState({
         ToggleNavBar:"hide"
       });
@@ -58,30 +45,26 @@ class App extends Component {
         ToggleNavBar:"Show"    
       });
     }
-  }
+  } 
   render() {
     debugger
     return (
       <Router>
-      
-      <div>
+        <div>
         <nav ref="loginLink" className={`navbar navbar-inverse ${this.state.ToggleNavBar}`}>
           <div className="container-fluid">
             <ul  className="nav navbar-nav">
-              <li ><Link to={'/'}>Home</Link></li>
               <li ><Link  to={'/Login'}>Login</Link></li>
             </ul>
           </div>
         </nav>
        
         <Switch>
-          <Route exact path='/' exact render={(props)=>(<Home Hidenavbar={this.hidenavbar.bind(this)}/>)}/>
           <Route  path="/login"  exact render={(props) =>((!localStorage.getItem("TokenId"))?<Login user={this.userdetails.bind(this)} {...props}/>:window.location="/firstpage" )}/>
           <Route exact path='/signup' component={Signup}/>
           <Route path="/firstpage" exact render={(props) =>((localStorage.getItem("TokenId"))?<Firstpage SigninDisplay={this.state.userdetail} hidelinks={this.HideLinks.bind(this)} userPage={this.userdetails.bind(this)} {...props}/>:window.location="/login")}/>
         </Switch>
-      </div>
-       
+        </div>
       </Router>
     );
   }
