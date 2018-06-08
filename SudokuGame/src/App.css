@@ -1,3 +1,9 @@
+.Show{
+  display: "block";
+}
+.hide{
+  display:"none";
+}
 .App {
   text-align: center;
 }

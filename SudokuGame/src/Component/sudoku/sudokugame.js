@@ -13,14 +13,13 @@ class Firstpage extends Component {
   {
     super();
     this.state={
-    username:"",
-    gamewon:0,
-    timer:"0:0",
-    timewon:"",
-    gamedetails:[],
-    user:"",
-    greeting:"Hello"
-
+      username:"",
+      gamewon:0,
+      timer:"0:0",
+      timewon:"",
+      gamedetails:[],
+      user:"",
+      greeting:"Hello"
     };
     this.EnterNumber=this.EnterNumber.bind(this);
     this.startTimer=this.startTimer.bind(this);
@@ -35,15 +34,17 @@ class Firstpage extends Component {
   }
 componentWillMount()
 {
+  var TokenId=localStorage.getItem("TokenId");
+  console.log(TokenId);
+  this.props.hidelinks(TokenId);
+  var userDetails=localStorage.getItem("userdetails");
   GeneratingRandomNumbers();
   this.SendingUserDetails();
   this.GettingHistory();
   this.setState({
-  username:this.props.userdisplay,
-  user:this.props.usershow
+  username:this.props.SigninDisplay,
+  user:userDetails
   })
-  var token=localStorage.getItem("TokenId");
-  this.props.userPage({email:token});
 }
 
 componentDidMount()
@@ -63,7 +64,7 @@ componentDidMount()
 MouseOver(event)
 { if(event){
   this.setState({
-    greeting:"Hope You Are Enjoying !"
+    greeting:"Hope You Are Enjoying"
   })}
 }
 MouseOut(event)
@@ -258,8 +259,9 @@ EnterNumber(e,ref)
   window.StoringValue[rowindex][colindex]=e.target.value;
   this.check();
   this.Backtracking();
+
 }
-  
+
 async check()
 {
   var cell=0;
@@ -319,10 +321,11 @@ async sendingSudokuDetails()
   });
 }
 
-cleardata()
+async cleardata()
 { 
-  localStorage.clear();
-  this.props.userPage({email:""});
+ await this.props.hidelinks("logout");
+ await localStorage.clear();
+ window.location.reload();
 }
 
 
@@ -337,15 +340,13 @@ render() {
     <div className="container-fluid">
       <div className="row">
         <div className="col-sm-4">
-          <h1 onMouseOver={this.MouseOver} onMouseOut={this.MouseOut} ref="greeting">{this.state.greeting}</h1>
-          <h6>{this.state.username}</h6>
-          <h6>{this.state.username.email}</h6>
+          <h2 onMouseOver={this.MouseOver} onMouseOut={this.MouseOut} ref="greeting">{this.state.greeting} {this.state.user} !</h2>
         </div>
         <div className="col-sm-7">
         </div>
         <div className="col-sm-1">
-          <button className="btn btn-danger" onClick={this.cleardata}> <Link to={'/'} >
-          LogOut</Link></button>
+          <Link to={'/'} > <button className="btn btn-danger" onClick={this.cleardata}> 
+          LogOut</button></Link>
         </div>
      </div>
     </div>

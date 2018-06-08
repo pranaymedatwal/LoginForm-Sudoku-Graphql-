@@ -10,41 +10,62 @@ class App extends Component {
   constructor(){
     super();
     this.state={
-      userdetail:""
+      userdetail:"",
+      ToggleNavBar:"Show"  
     }
     this.userdetails=this.userdetails.bind(this);
+    this.HideLinks=this.HideLinks.bind(this);
   }
   async userdetails(response)
   {debugger
-    var Token=response.email;
-    localStorage.setItem("TokenId", Token);
-    var TokenId=localStorage.getItem("TokenId");
-    await this.setState({
-      userdetail:TokenId
-    });
-    if((this.state.userdetail!=="")){
-      this.refs.loginLink.style.display="none";
+    var Token="";
+    if(!localStorage.getItem("TokenId")){
+      for(var i=0;i<9;i++)
+      {
+        Token =Token+(Math.floor(Math.random() * 10) + 1); 
+      }
+      Token=Token.toString();
+      var userdetails=response.firstname;
+      localStorage.setItem("TokenId",Token);
+      localStorage.setItem("userdetails",userdetails);
+    
+      this.setState({
+        userdetail:response.firstname
+      });
     }
-    else
+  }
+  async HideLinks(response)
+  {
+    if(response!=="logout"){
+     await this.setState({
+        ToggleNavBar:"hide"
+      });
+    }else
     {
-      this.refs.loginLink.style.display="block";
+      this.setState({
+        ToggleNavBar:"Show"    
+      });
+    }
+  }
+  async hidenavbar(response){
+    if(response!=="logout"){
+      await this.setState({
+        ToggleNavBar:"hide"
+      });
+    }else
+    {
+      await this.setState({
+        ToggleNavBar:"Show"    
+      });
     }
   }
   render() {
-    var check1;
-    var check=localStorage.getItem("TokenId");
-    if(check)
-    {
-      check1=0;
-    }
-    else{
-      check1=1;
-    }
+    debugger
     return (
       <Router>
       
       <div>
-        <nav ref="loginLink" className="navbar navbar-inverse">
+        <nav ref="loginLink" className={`navbar navbar-inverse ${this.state.ToggleNavBar}`}>
           <div className="container-fluid">
             <ul  className="nav navbar-nav">
               <li ><Link to={'/'}>Home</Link></li>
@@ -54,10 +75,10 @@ class App extends Component {
         </nav>
        
         <Switch>
-          <Route exact path='/' component={Home}/>
-          {check1 ? <Route path="/Login" exact render={(props) => (<Login user={this.userdetails.bind(this)} {...props}/>)} />:<Route path="/login" exact render={(props) => (<Firstpage userdisplay={this.state.userdetail} userPage={this.userdetails.bind(this)} {...props}/>)}/>}
+          <Route exact path='/' exact render={(props)=>(<Home Hidenavbar={this.hidenavbar.bind(this)}/>)}/>
+          <Route  path="/login"  exact render={(props) =>((!localStorage.getItem("TokenId"))?<Login user={this.userdetails.bind(this)} {...props}/>:window.location="/firstpage" )}/>
           <Route exact path='/signup' component={Signup}/>
-          {check ? <Route path="/firstpage" exact render={(props) => (<Firstpage userdisplay={this.state.userdetail} usershow={this.state.user} userPage={this.userdetails.bind(this)} {...props}/>)}/>: <Route path="/firstpage" exact render={(props) => (<Login user={this.userdetails.bind(this)} {...props}/>)} />}
+          <Route path="/firstpage" exact render={(props) =>((localStorage.getItem("TokenId"))?<Firstpage SigninDisplay={this.state.userdetail} hidelinks={this.HideLinks.bind(this)} userPage={this.userdetails.bind(this)} {...props}/>:window.location="/login")}/>
         </Switch>
       </div>
        
