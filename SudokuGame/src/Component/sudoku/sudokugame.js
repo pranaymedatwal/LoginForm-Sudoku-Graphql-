@@ -31,6 +31,7 @@ class Firstpage extends Component {
     this.cleardata=this.cleardata.bind(this);
     this.MouseOver=this.MouseOver.bind(this);
     this.MouseOut=this.MouseOut.bind(this);
+    this.TicTacToeGame=this.TicTacToeGame.bind(this);
   }
 componentWillMount()
 {
@@ -56,7 +57,7 @@ componentDidMount()
   if(this.state.username!==""){
     this.refs.signedIn.style.display="block";
     if(window.stop===0){
-      setTimeout(this.StopDisplay,1000)
+      setTimeout(this.StopDisplay,4000)
       window.stop++;
     }
   }
@@ -124,7 +125,6 @@ async startTimer(){
 
   setTimeout(this.startTimer, 1000);
    }
-
 }
 
 checkSecond(sec) {
@@ -327,7 +327,9 @@ async cleardata()
  await localStorage.clear();
  window.location.reload();
 }
-
+TicTacToeGame(){
+  this.props.history.push("/tictactoe");
+}
 
 
 render() {
@@ -342,10 +344,11 @@ render() {
         <div className="col-sm-4">
           <h2 onMouseOver={this.MouseOver} onMouseOut={this.MouseOut} ref="greeting">{this.state.greeting} {this.state.user} !</h2>
         </div>
-        <div className="col-sm-7">
+        <div className="col-sm-6">
         </div>
-        <div className="col-sm-1">
-          <Link to={'/login'} > <button className="btn btn-danger" onClick={this.cleardata}> 
+        <div className="col-sm-2">
+        <button className="btn btn-primary" onClick={this.TicTacToeGame}>TicTacToe</button>
+        <Link to={'/login'} > <button className="btn btn-danger" onClick={this.cleardata}> 
           LogOut</button></Link>
         </div>
      </div>
@@ -372,7 +375,7 @@ render() {
             <br/>
             <button className="btn btn-success" ref="hint" onClick={this.Hint}>Hint</button>
           </div>
-          <div className="col-sm-4">
+          <div className="col-sm-4 ">
             <table id="grid" className="table table-bordered">
               <tbody>
                 {row.map((rowindex)=>

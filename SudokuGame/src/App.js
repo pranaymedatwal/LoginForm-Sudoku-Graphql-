@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Login from './Component/login/Login.js';
 import Signup from './Component/Signup/signup.js';
 import Firstpage from './Component/sudoku/sudokugame.js';
+import Tictactoe from "./Component/tictactoe.js";
 
 class App extends Component {
   constructor(){
@@ -41,7 +42,7 @@ class App extends Component {
       });
     }else
     {
-      await this.setState({
+     await this.setState({
         ToggleNavBar:"Show"    
       });
     }
@@ -63,6 +64,7 @@ class App extends Component {
           <Route  path="/login"  exact render={(props) =>((!localStorage.getItem("TokenId"))?<Login user={this.userdetails.bind(this)} {...props}/>:window.location="/firstpage" )}/>
           <Route exact path='/signup' component={Signup}/>
           <Route path="/firstpage" exact render={(props) =>((localStorage.getItem("TokenId"))?<Firstpage SigninDisplay={this.state.userdetail} hidelinks={this.HideLinks.bind(this)} userPage={this.userdetails.bind(this)} {...props}/>:window.location="/login")}/>
+          <Route  path='/tictactoe' component={Tictactoe}/>
         </Switch>
         </div>
       </Router>

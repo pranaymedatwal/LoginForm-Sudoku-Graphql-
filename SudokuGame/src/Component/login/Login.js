@@ -21,6 +21,7 @@ class Login extends Component {
   }
    
 async senddetails(event){
+  debugger
   event.preventDefault();
   const cookies = new Cookies();
   if(this.refs.checkbox)
